@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calma-app-v2';
+const CACHE_NAME = 'calma-app-v1';
 const ASSETS = [
   './',
   './index.html',
