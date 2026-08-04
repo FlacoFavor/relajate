@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <title>Calma App</title>
+  <!-- Enlazamos el archivo de estilos externo -->
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <h1 id="text">Haz clic para comenzar</h1>
+  
+  <div class="circle-container">
+    <div class="circle" id="circle"></div>
+  </div>
+
+  <div id="timerDisplay">01:00</div>
+
+  <div class="controls">
+    <div class="selectors">
+      <select id="soundSelect">
+        <option value="lluvia">🌧️ Lluvia Orgánica</option>
+        <option value="cuenco">🧘 Cuenco Tibetano</option>
+        <option value="blanco">⚪ Ruido Blanco</option>
+        <option value="alfa">🧬 Ondas Alfa (432Hz)</option>
+        <option value="silencio">🤫 Silencio</option>
+      </select>
+
+      <select id="timeSelect">
+        <option value="60">1 Minuto</option>
+        <option value="180">3 Minutos</option>
+        <option value="300">5 Minutos</option>
+      </select>
+    </div>
+
+    <button id="actionBtn">Comenzar</button>
+  </div>
+
+  <!-- Enlazamos el archivo de lógica externo -->
+  <script src="app.js"></script>
+</body>
+</html>

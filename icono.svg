@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Degradado idéntico al fondo CSS de Calma App -->
+    <linearGradient id="calmaBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2a6c" />
+      <stop offset="50%" stop-color="#275d7a" />
+      <stop offset="100%" stop-color="#2980b9" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base del icono redondeada para dispositivos móviles -->
+  <rect width="512" height="512" rx="120" fill="url(#calmaBg)" />
+
+  <!-- Ondas concéntricas que representan los ciclos de respiración -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.15" />
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.25" stroke-dasharray="10 10" />
+  <circle cx="256" cy="256" r="100" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.4" />
+
+  <!-- Flor de loto estilizada y moderna -->
+  <g transform="translate(256, 280)" fill="#ffffff">
+    <!-- Pétalo Central Principal -->
+    <path d="M0,-110 C25,-60 35,-30 0,0 C-35,-30 -25,-60 0,-110 Z" fill-opacity="1" />
+    
+    <!-- Pétalos Intermedios Izquierda y Derecha -->
+    <path d="M0,-10 C30,-30 65,-40 60,-5 C55,25 20,20 0,0 Z" fill-opacity="0.75" transform="rotate(25)" />
+    <path d="M0,-10 C-30,-30 -65,-40 -60,-5 C-55,25 -20,20 0,0 Z" fill-opacity="0.75" transform="rotate(-25)" />
+    
+    <!-- Pétalos Laterales Base -->
+    <path d="M0,0 C40,-15 85,-10 80,25 C75,55 30,30 0,0 Z" fill-opacity="0.5" transform="rotate(50)" />
+    <path d="M0,0 C-40,-15 -85,-10 -80,25 C-75,55 -30,30 0,0 Z" fill-opacity="0.5" transform="rotate(-50)" />
+  </g>
+
+  <!-- Gota superior que representa la claridad y el foco -->
+  <circle cx="256" cy="135" r="10" fill="#ffffff" />
+</svg>
