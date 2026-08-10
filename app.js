@@ -1,5 +1,6 @@
 const text = document.getElementById('text');
 const circle = document.getElementById('circle');
+const stepTimer = document.getElementById('stepTimer');
 const actionBtn = document.getElementById('actionBtn');
 const soundSelect = document.getElementById('soundSelect');
 const timeSelect = document.getElementById('timeSelect');
@@ -317,12 +318,15 @@ function iniciarTemporizador() {
 }
 
 function actualizarTextoRespiracion() {
+  // El número se actualizará de forma independiente
+  stepTimer.textContent = segundosFase + "s";
+
   if (pasoRespiracion === 0) {
-    text.innerText = `Inhala profundamente... (${segundosFase}s)`;
+    text.textContent = "Inhala profundamente...";
   } else if (pasoRespiracion === 1) {
-    text.innerText = `Retén el aire... (${segundosFase}s)`;
+    text.textContent = "Retén el aire...";
   } else if (pasoRespiracion === 2) {
-    text.innerText = `Exhala despacio... (${segundosFase}s)`;
+    text.textContent = "Exhala despacio...";
   }
 }
 
@@ -332,6 +336,7 @@ function concluirSesion() {
   actionBtn.innerText = 'Volver a empezar';
   timeLeft = parseInt(timeSelect.value);
   actualizarInterfazReloj();
+  stepTimer.textContent = "🧘";
 }
 
 function detenerTodoEfectos() {
@@ -345,6 +350,8 @@ function detenerTodoEfectos() {
   clearInterval(countdownId);
   pasoRespiracion = 0;
   segundosFase = 4;
+
+  stepTimer.textContent = "🧘";
   
   circle.className = 'circle';
   detenerSonidos();
