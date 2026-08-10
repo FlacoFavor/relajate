@@ -319,7 +319,7 @@ function iniciarTemporizador() {
 
 function actualizarTextoRespiracion() {
   // El número se actualizará de forma independiente
-  stepTimer.textContent = segundosFase + "s";
+  stepTimer.textContent = segundosFase;
 
   if (pasoRespiracion === 0) {
     text.textContent = "Inhala profundamente...";
