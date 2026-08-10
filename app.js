@@ -14,6 +14,7 @@ let audioCtx = null;
 let activeNodes = [];
 let timeLeft = 60;
 let pasoRespiracion = 0;
+let segundosFase = 4;
 
 function initAudio() {
   if (!audioCtx) {
@@ -275,6 +276,7 @@ async function requestWakeLock() {
   } catch (err) { console.log(err.message); }
 }
 
+/*
 function breatheAnimation() {
   if (pasoRespiracion === 0) {
     text.innerText = 'Inhala profundamente...';
@@ -287,16 +289,41 @@ function breatheAnimation() {
     pasoRespiracion = 0;
   }
 }
+*/
 
 function iniciarTemporizador() {
+  // Mostramos el estado inicial de inmediato al arrancar
+  actualizarTextoRespiracion();
+
   countdownId = setInterval(() => {
     timeLeft--;
+    segundosFase--; // Restamos un segundo a la fase de respiración
+    
     actualizarInterfazReloj();
+
+    // Si la fase llegó a 0, avanzamos a la siguiente fase y reiniciamos a 4 segundos
+    if (segundosFase <= 0) {
+      pasoRespiracion = (pasoRespiracion + 1) % 3; // Pasa de 0->1->2 y vuelve a 0
+      segundosFase = 4;
+    }
+
+    // Actualizamos el texto con los segundos restantes de la fase actual
+    actualizarTextoRespiracion();
 
     if (timeLeft <= 0) {
       concluirSesion();
     }
   }, 1000);
+}
+
+function actualizarTextoRespiracion() {
+  if (pasoRespiracion === 0) {
+    text.innerText = `Inhala profundamente... (${segundosFase}s)`;
+  } else if (pasoRespiracion === 1) {
+    text.innerText = `Retén el aire... (${segundosFase}s)`;
+  } else if (pasoRespiracion === 2) {
+    text.innerText = `Exhala despacio... (${segundosFase}s)`;
+  }
 }
 
 function concluirSesion() {
@@ -317,6 +344,7 @@ function detenerTodoEfectos() {
   clearInterval(intervalId);
   clearInterval(countdownId);
   pasoRespiracion = 0;
+  segundosFase = 4;
   
   circle.className = 'circle';
   detenerSonidos();
@@ -352,8 +380,8 @@ actionBtn.addEventListener('click', async () => {
     if (seleccion === 'cosmico') reproducirSonidoCosmico(); // Añadido
 
     circle.className = 'circle circle-animado'; 
-    breatheAnimation(); 
-    intervalId = setInterval(breatheAnimation, 4000); 
+    //breatheAnimation(); 
+    //intervalId = setInterval(breatheAnimation, 4000); 
     iniciarTemporizador();
   } else {
     detenerTodoEfectos();
