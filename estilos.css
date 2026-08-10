@@ -102,4 +102,12 @@ select option {
   transition: transform 0.2s, background-color 0.2s;
 }
 
+#stepTimer {
+  font-size: 2.2rem; /* Más grande para que se lea bien en el centro */
+  font-weight: bold;
+  margin: 0; /* Quitamos márgenes para que no se descentre */
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
 #actionBtn:active { transform: scale(0.95); }
