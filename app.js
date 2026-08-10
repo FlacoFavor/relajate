@@ -168,6 +168,100 @@ function reproducirOndasAlfa() {
   activeNodes.push(oscIzquierdo, oscDerecho);
 }
 
+function reproducirRuidoMarron() {
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = noiseBuffer.getChannelData(0);
+  let lastOut = 0.0;
+
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    // Filtro matemático para acumular energía en frecuencias bajas
+    output[i] = (lastOut + (0.02 * white)) / 1.02;
+    lastOut = output[i];
+    output[i] *= 3.5; 
+  }
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = noiseBuffer;
+  source.loop = true;
+
+  const gainNode = audioCtx.createGain();
+  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 1.5);
+
+  source.connect(gainNode).connect(audioCtx.destination);
+  source.start();
+  activeNodes.push(source);
+}
+
+function reproducirOndasTheta() {
+  const oscIzquierdo = audioCtx.createOscillator();
+  const oscDerecho = audioCtx.createOscillator();
+  const pannerIzquierdo = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+  const pannerDerecho = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+  const gainNode = audioCtx.createGain();
+
+  // Frecuencias base con diferencia exacta de 4Hz para inducir estado Theta
+  oscIzquierdo.frequency.setValueAtTime(200, audioCtx.currentTime);
+  oscDerecho.frequency.setValueAtTime(204, audioCtx.currentTime);
+
+  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 2);
+
+  if (pannerIzquierdo && pannerDerecho) {
+    pannerIzquierdo.pan.setValueAtTime(-1, audioCtx.currentTime);
+    pannerDerecho.pan.setValueAtTime(1, audioCtx.currentTime);
+    oscIzquierdo.connect(pannerIzquierdo).connect(gainNode);
+    oscDerecho.connect(pannerDerecho).connect(gainNode);
+  } else {
+    oscIzquierdo.connect(gainNode);
+    oscDerecho.connect(gainNode);
+  }
+
+  gainNode.connect(audioCtx.destination);
+  oscIzquierdo.start();
+  oscDerecho.start();
+  activeNodes.push(oscIzquierdo, oscDerecho);
+}
+
+function reproducirSonidoCosmico() {
+  // Tres frecuencias armónicas bajas en base a una nota musical (Do/C)
+  const frecuencias = [65.41, 130.81, 196.22];
+
+  frecuencias.forEach((freq, index) => {
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    const filtro = audioCtx.createBiquadFilter();
+
+    // Ondas triangulares para un sonido más suave y armónico que las senoidales
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    filtro.type = 'lowpass';
+    filtro.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+    // Oscilador de baja frecuencia (LFO) para hacer que el sonido se mueva como el espacio
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.frequency.setValueAtTime(0.05 + (index * 0.02), audioCtx.currentTime);
+    lfoGain.gain.setValueAtTime(100, audioCtx.currentTime);
+
+    lfo.connect(lfoGain).connect(filtro.frequency);
+
+    const vol = index === 0 ? 0.15 : 0.06;
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 3);
+
+    osc.connect(filtro).connect(gainNode).connect(audioCtx.destination);
+    
+    lfo.start();
+    osc.start();
+    activeNodes.push(osc, lfo);
+  });
+}
+
+
 function detenerSonidos() {
   activeNodes.forEach(node => {
     try { node.stop(); node.disconnect(); } catch(e) {}
@@ -252,7 +346,10 @@ actionBtn.addEventListener('click', async () => {
     if (seleccion === 'lluvia') reproducirLluvia();
     if (seleccion === 'cuenco') reproducirCuenco();
     if (seleccion === 'blanco') reproducirRuidoBlanco();
+    if (seleccion === 'marron') reproducirRuidoMarron(); // Añadido
     if (seleccion === 'alfa') reproducirOndasAlfa();
+    if (seleccion === 'theta') reproducirOndasTheta();   // Añadido
+    if (seleccion === 'cosmico') reproducirSonidoCosmico(); // Añadido
 
     circle.className = 'circle circle-animado'; 
     breatheAnimation(); 
